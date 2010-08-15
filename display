@@ -4,23 +4,23 @@ use warnings;
 use strict;
 use lib 'lib';
 use Gtk2 -init;
-use Forest::Gtk2;
+use Forest::Tree::Viewer::Gtk2;
 use Forest::Tree;
 use Forest::Tree::Reader::SimpleTextFile;
-
-                
-
 
 my $reader = Forest::Tree::Reader::SimpleTextFile->new;
 $reader->read(\*DATA);
 
+my $tree = Forest::Tree->new(node=>'root',children=>[
+    Forest::Tree->new(node=>'child1'),
+    Forest::Tree->new(node=>'child2'),
+]);
 
-
-my $tree_view = Forest::Gtk2::tree_to_tree_view($reader->tree); 
-
+my $viewer = Forest::Tree::Viewer::Gtk2->new(tree=>$tree);
 my $window = Gtk2::Window->new('toplevel');
-$window->add($tree_view);
+$window->add($viewer->view);
 $window->show_all;
+
 Gtk2->main;
 
 
@@ -36,3 +36,4 @@ root
     4.0
         4.1
             4.1.1
+other root
